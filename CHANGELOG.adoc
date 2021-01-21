@@ -9,7 +9,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 === Removed
 
-* Dependency on serde
+* Dependency on serde, serde-json and url
+* Various not needed features
 
 == https://github.com/Chronophylos/rust-rcon/releases/tag/v0.1.0[Initial Release] - 2021-01-21
 

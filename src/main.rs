@@ -6,7 +6,6 @@ use std::{
     io::{self, BufRead},
 };
 use tungstenite::{connect, Message};
-use url::Url;
 
 #[derive(Debug, Clone)]
 struct Package<'a> {
@@ -44,8 +43,7 @@ impl Package<'_> {
 }
 
 fn send_packages(url: &str, packages: Vec<Package>) -> Result<()> {
-    let (mut socket, response) = connect(Url::parse(url).context("Could not parse url")?)
-        .context("Could not connect to RCON")?;
+    let (mut socket, response) = connect(url).context("Could not connect to RCON")?;
 
     info!("Connected to RCON");
     debug!("Response HTTP code: {}", response.status());
