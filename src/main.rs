@@ -1,7 +1,6 @@
 use anyhow::{Context, Result};
 use clap::{App, Arg};
 use log::{debug, info};
-use serde::Serialize;
 use std::{
     borrow::Cow,
     io::{self, BufRead},
@@ -9,13 +8,10 @@ use std::{
 use tungstenite::{connect, Message};
 use url::Url;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 struct Package<'a> {
-    #[serde(rename = "Identifier")]
     identifier: i32,
-    #[serde(rename = "Message")]
     message: Cow<'a, str>,
-    #[serde(rename = "Name")]
     name: Cow<'a, str>,
 }
 
@@ -32,6 +28,21 @@ impl<'a> Package<'a> {
     }
 }
 
+impl Package<'_> {
+    pub fn to_text(&self) -> String {
+        format!(
+            r#"{{Identifier:"{}",Message:"{}",Name:{}}}"#,
+            self.identifier,
+            self.message.escape_debug(),
+            self.name.escape_debug()
+        )
+    }
+
+    pub fn to_message(&self) -> Message {
+        Message::Text(self.to_text())
+    }
+}
+
 fn send_packages(url: &str, packages: Vec<Package>) -> Result<()> {
     let (mut socket, response) = connect(Url::parse(url).context("Could not parse url")?)
         .context("Could not connect to RCON")?;
@@ -44,9 +55,7 @@ fn send_packages(url: &str, packages: Vec<Package>) -> Result<()> {
         info!("Sending: {:?}", &package);
 
         socket
-            .write_message(Message::Text(
-                serde_json::to_string(&package).context("Could not parse package to json")?,
-            ))
+            .write_message(package.to_message())
             .context("Could not send message to RCON")?;
     }
 
