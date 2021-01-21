@@ -4,6 +4,10 @@ version = "0.1.0"
 authors = ["Chronophylos <nikolai@chronophylos.com>"]
 edition = "2018"
 license = "MIT"
+description = "A Rust Server RCON Tool"
+documentation = "https://docs.rs/rust-rcon"
+repository = "https://github.com/chronophylos/rust-rcon"
+homepage = "https://github.com/chronophylos/rust-rcon"
 
 [dependencies]
 tungstenite = "0.12.0"
