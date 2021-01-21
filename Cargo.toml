@@ -10,7 +10,7 @@ repository = "https://github.com/chronophylos/rust-rcon"
 homepage = "https://github.com/chronophylos/rust-rcon"
 
 [dependencies]
-tungstenite = "0.12.0"
+tungstenite = { version = "0.12.0", default-features = false }
 env_logger = "0.8.2"
 anyhow = "1.0.38"
 url = "2.2.0"

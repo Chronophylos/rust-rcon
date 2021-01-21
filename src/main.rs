@@ -55,17 +55,8 @@ fn send_packages(url: &str, packages: Vec<Package>) -> Result<()> {
     Ok(())
 }
 
-fn run(server: &str, port: u16, password: &str, packages: Vec<Package>, ssl: bool) -> Result<()> {
-    send_packages(
-        &format!(
-            "{}://{}:{}/{}",
-            if ssl { "wss" } else { "ws" },
-            server,
-            port,
-            password
-        ),
-        packages,
-    )
+fn run(server: &str, port: u16, password: &str, packages: Vec<Package>) -> Result<()> {
+    send_packages(&format!("ws://{}:{}/{}", server, port, password), packages)
 }
 
 fn main() -> Result<()> {
@@ -78,7 +69,6 @@ fn main() -> Result<()> {
 
 Example: myrustserver.com s3cur3 \"say Setting time to 0900\" \"env.time 9\"",
         )
-        .arg(Arg::with_name("ssl").help("Enable SSL").long("--ssl"))
         .arg(
             Arg::with_name("port")
                 .help("RCON Port")
@@ -136,7 +126,6 @@ Example: myrustserver.com s3cur3 \"say Setting time to 0900\" \"env.time 9\"",
             .value_of("password")
             .context("Missing argument 'password'")?,
         packages,
-        matches.is_present("ssl"),
     )?;
 
     Ok(())
