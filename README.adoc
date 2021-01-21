@@ -1,0 +1,50 @@
+= Rust RCON Too
+
+A simple tool to send commands to a Rust server via RCON.
+
+== Installation
+
+----
+cargo install rust-rcon
+----
+
+== Usage
+
+----
+USAGE:
+    rust-rcon [FLAGS] [OPTIONS] <server> <password> <commands>...
+
+FLAGS:
+    -h, --help       Prints help information
+        --ssl        Enable SSL
+    -V, --version    Prints version information
+
+OPTIONS:
+    -p, --port <port>    RCON Port [default: 28016]
+
+ARGS:
+    <server>         Rust Server name or IP
+    <password>       RCON Password
+    <commands>...    Commands to execute on server. Pass '-' to read from STDIN
+----
+
+== Examples
+
+.Print "Setting time to 9am" and setting time to 9am
+----
+rust-rcon myrustserver.gg Kappa123 "say Setting time to 9am" "time.env 9"
+----
+
+.Using Stdin
+----
+cat commands | rust-rcon myrustserver.gg Paaaaaaaassword -
+----
+
+.Using a non-standard port
+----
+rust-rcon -p 200013 coolrustserver.com CHANGE_ME "say :)"
+----
+
+== License
+
+This project is licensed under the link:LICENSE[MIT license]
