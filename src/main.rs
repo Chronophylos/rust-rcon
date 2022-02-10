@@ -30,10 +30,9 @@ impl<'a> Package<'a> {
 impl Package<'_> {
     pub fn to_text(&self) -> String {
         format!(
-            r#"{{Identifier:"{}",Message:"{}",Name:{}}}"#,
+            r#"{{"Identifier":"{}","Message":"{}","Stacktrace":""}}"#,
             self.identifier,
-            self.message.escape_debug(),
-            self.name.escape_debug()
+            self.message.escape_debug()
         )
     }
 
