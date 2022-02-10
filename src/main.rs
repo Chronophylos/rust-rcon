@@ -32,8 +32,7 @@ impl Package<'_> {
         format!(
             r#"{{"Identifier":"{}","Message":"{}","Stacktrace":""}}"#,
             self.identifier,
-            self.message.escape_debug(),
-            self.name.escape_debug()
+            self.message.escape_debug()
         )
     }
 
