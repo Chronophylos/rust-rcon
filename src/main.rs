@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use clap::{App, Arg};
+use clap::{Arg, Command};
 use log::{debug, info};
 use serde::Serialize;
 use std::{
@@ -63,7 +63,7 @@ fn run(server: &str, port: u16, password: &str, packages: Vec<Package>) -> Resul
 fn main() -> Result<()> {
     env_logger::init();
 
-    let matches = App::new("Rust RCON Tool")
+    let matches = Command::new("Rust RCON Tool")
         .about("written in Rust")
         .after_help(
             "Each command need to be in hyphens to differenciante between them.
@@ -71,26 +71,22 @@ fn main() -> Result<()> {
 Example: myrustserver.com s3cur3 \"say Setting time to 0900\" \"env.time 9\"",
         )
         .arg(
-            Arg::with_name("port")
+            Arg::new("port")
                 .help("RCON Port")
-                .short("-p")
-                .long("--port")
+                .short('p')
+                .long("port")
                 .default_value("28016"),
         )
         .arg(
-            Arg::with_name("server")
+            Arg::new("server")
                 .help("Rust Server name or IP")
                 .required(true),
         )
+        .arg(Arg::new("password").help("RCON Password").required(true))
         .arg(
-            Arg::with_name("password")
-                .help("RCON Password")
-                .required(true),
-        )
-        .arg(
-            Arg::with_name("commands")
+            Arg::new("commands")
                 .help("Commands to execute on server. Pass '-' to read from STDIN")
-                .multiple(true)
+                .multiple_occurrences(true)
                 .required(true),
         )
         .get_matches();
