@@ -2,7 +2,7 @@
 name = "rust-rcon"
 version = "0.1.1"
 authors = ["Chronophylos <nikolai@chronophylos.com>"]
-edition = "2018"
+edition = "2021"
 license = "MIT"
 description = "A Rust Server RCON Tool"
 documentation = "https://docs.rs/rust-rcon"
