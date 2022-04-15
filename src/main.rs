@@ -66,7 +66,7 @@ fn main() -> Result<()> {
     let matches = Command::new("Rust RCON Tool")
         .about("written in Rust")
         .after_help(
-            "Each command need to be in hyphens to differenciante between them.
+            "Each command needs to be in hyphens to differenciante between them.
 
 Example: myrustserver.com s3cur3 \"say Setting time to 0900\" \"env.time 9\"",
         )
