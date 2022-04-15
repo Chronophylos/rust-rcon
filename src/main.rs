@@ -1,13 +1,14 @@
 use anyhow::{Context, Result};
 use clap::{App, Arg};
 use log::{debug, info};
+use serde::Serialize;
 use std::{
     borrow::Cow,
     io::{self, BufRead},
 };
 use tungstenite::{connect, Message};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 struct Package<'a> {
     identifier: i32,
     message: Cow<'a, str>,
@@ -28,16 +29,10 @@ impl<'a> Package<'a> {
 }
 
 impl Package<'_> {
-    pub fn to_text(&self) -> String {
-        format!(
-            r#"{{"Identifier":"{}","Message":"{}","Stacktrace":""}}"#,
-            self.identifier,
-            self.message.escape_debug()
-        )
-    }
-
-    pub fn to_message(&self) -> Message {
-        Message::Text(self.to_text())
+    pub fn as_message(&self) -> Result<Message> {
+        serde_json::to_string(&self)
+            .map(Message::text)
+            .context("Error serializing package")
     }
 }
 
@@ -52,7 +47,7 @@ fn send_packages(url: &str, packages: Vec<Package>) -> Result<()> {
         info!("Sending: {:?}", &package);
 
         socket
-            .write_message(package.to_message())
+            .write_message(package.as_message()?)
             .context("Could not send message to RCON")?;
     }
 
